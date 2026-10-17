@@ -15,7 +15,9 @@ Each application has its own README with setup instructions. Read the relevant o
 
 Every piece of work should start from an issue on the project board, not from an empty branch. If you think of something that needs doing, open an issue first and place it in the Backlog column. Move an issue to Ready only once it has clear acceptance criteria and nothing blocking it.
 
-If a task depends on an API endpoint, agree on the request and response shape with the other developer before you start building against it. Record that agreement in the issue or in `docs/api-specification.md`.
+If a task depends on an API endpoint, agree on the request and response shape with the other developer before you start building against it. Record that agreement in the issue, in [`docs/api-contract.md`](docs/api-contract.md), or in [`docs/openapi.yaml`](docs/openapi.yaml).
+
+If a task touches a financial calculation or a piece of terminology, check it against the MVP Product Requirements Document first: section 9 is the shared business rules and glossary, and section 10 is the set of worked acceptance examples. Those sections are the single source of truth for how Finora's numbers work. Don't invent a rule or a label that isn't already there without agreeing on it together first.
 
 ## Branch naming
 
@@ -64,8 +66,9 @@ Before moving an issue to Done, confirm the following.
 
 - The acceptance criteria in the issue have been met.
 - The code is readable and placed in the right module or feature folder.
-- Validation and authorization are enforced on the server, not only in the interface.
+- Validation and authorization are enforced on the server, not only in the interface. The backend stays the source of truth for every balance and every calculation; the frontend never recreates one independently.
 - Loading, empty, success and error states are handled where they apply.
+- For a change that touches the interface, the screen works at phone width and by keyboard.
 - Relevant tests have been written and pass locally.
 - No secrets, debug output or commented out code are left behind.
 - Documentation has been updated if the change affects setup or behaviour.
