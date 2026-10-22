@@ -1,0 +1,29 @@
+# Local PostgreSQL for backend development.
+#
+# Usage:
+#   docker compose up -d      # start Postgres in the background
+#   docker compose down       # stop it, data persists in the named volume
+#   docker compose down -v    # stop it and wipe the local data
+#
+# These defaults match application.properties exactly, so running the app
+# with no .env file at all still works against this database.
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:}
+      POSTGRES_USER: ${DB_USERNAME:}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - finora-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-finora} -d ${DB_NAME:-finora}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  finora-postgres-data:
